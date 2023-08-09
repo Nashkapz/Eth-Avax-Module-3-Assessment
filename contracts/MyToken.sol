@@ -10,12 +10,17 @@ contract Token {
     string public abbrv = "KPZ";
     uint public totalSupply = 0;
     
+    address private owner;
 
+    constructor(){
+        owner = msg.sender;
+    }
     // mapping variable here
     mapping (address=> uint) public balances;
 
     // mint function
     function mint(address _address, uint _value) public {
+        require(msg.sender == owner, "Only owner is allowed to mint tokens.");
         totalSupply += _value;
         balances[_address] += _value;  
 
@@ -24,20 +29,18 @@ contract Token {
 
     // burn function
     function burn( address _address,uint _value) public {
-        if( balances[_address] >= _value){
-            totalSupply -= _value;
-            balances[_address] -= _value;
-        }
-        
+        require( balances[_address] >= _value, "You don't have enough tokens to burn.")
+        totalSupply -= _value;
+        balances[_address] -= _value;
+
     }
 
     // transfer function
     function transfer( address _address,uint _value) public {
-        if( balances[msg.sender] >= _value){
-            balances[_address] += _value;
-            balances[msg.sender] -= _value;
-        }
-        
+        require( balances[msg.sender] >= _value, "You don't have enough tokens to transfer.")
+        balances[_address] += _value;
+        balances[msg.sender] -= _value;
+
     }
 
 }
