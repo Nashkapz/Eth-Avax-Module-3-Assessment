@@ -10,13 +10,15 @@ contract Token {
     string public abbrv = "KPZ";
     uint public totalSupply = 0;
     
+    
+    // mapping variable here
+    mapping (address=> uint) public balances;
+
     address private owner;
 
     constructor(){
         owner = msg.sender;
     }
-    // mapping variable here
-    mapping (address=> uint) public balances;
 
     // mint function
     function mint(address _address, uint _value) public {
